@@ -97,14 +97,25 @@ export const useWebRTC = () => {
     );
   };
 
-  const addIceCandidate = async (candidate: string) => {
-    const pc = pcRef.current;
-    if (!pc) return;
+  const addIceCandidate = async (candidateText: string) => {
+  const pc = pcRef.current;
+  if (!pc) return;
 
-    await pc.addIceCandidate(
-      new RTCIceCandidate(JSON.parse(candidate))
-    );
-  };
+  const lines = candidateText
+    .split('\n')
+    .map(l => l.trim())
+    .filter(Boolean);
+
+  for (const line of lines) {
+    try {
+      const parsed = JSON.parse(line);
+      await pc.addIceCandidate(new RTCIceCandidate(parsed));
+    } catch (e) {
+      console.warn('Skipped invalid ICE line:', line);
+    }
+  }
+};
+
 
   return {
     localStream,

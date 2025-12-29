@@ -8,6 +8,10 @@ import {
 } from 'react-native';
 import { RTCView } from 'react-native-webrtc';
 
+import Clipboard from '@react-native-clipboard/clipboard';
+import { View, TouchableOpacity, Alert } from 'react-native';
+
+
 import { useWebRTC } from '../webrtc/useWebRTC';
 
 export default function JoinCallScreen() {
@@ -22,6 +26,12 @@ export default function JoinCallScreen() {
   const [offerInput, setOfferInput] = useState<string>('');
   const [answer, setAnswer] = useState<string>('');
   const [iceInput, setIceInput] = useState<string>('');
+
+  const copyToClipboard = (text: string, label: string) => {
+  Clipboard.setString(text);
+  Alert.alert('Copied', `${label} copied to clipboard`);
+};
+
 
   const handleCreateAnswer = async () => {
     if (!offerInput) return;
@@ -61,7 +71,15 @@ export default function JoinCallScreen() {
 
       <Button title="Create Answer" onPress={handleCreateAnswer} />
 
-      <Text style={styles.title}>Answer (copy & send)</Text>
+      <View style={styles.row}>
+        <Text style={styles.title}>Answer (copy & send)</Text>
+        {!!answer && (
+          <TouchableOpacity onPress={() => copyToClipboard(answer, 'Answer')}>
+            <Text style={styles.copy}>📋 Copy</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
       <TextInput
         style={styles.input}
         value={answer}
@@ -69,7 +87,21 @@ export default function JoinCallScreen() {
         editable={false}
       />
 
-      <Text style={styles.title}>ICE Candidates (send)</Text>
+      <View style={styles.row}>
+        <Text style={styles.title}>
+          ICE Candidates ({iceCandidates.length})
+        </Text>
+        {!!iceCandidates.length && (
+          <TouchableOpacity
+            onPress={() =>
+              copyToClipboard(iceCandidates.join('\n'), 'ICE candidates')
+            }
+          >
+            <Text style={styles.copy}>📋 Copy All</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
       {iceCandidates.map((candidate, index) => (
         <Text key={index} style={styles.iceText}>
           {candidate}
@@ -107,6 +139,7 @@ const styles = StyleSheet.create({
   },
   input: {
     minHeight: 80,
+    maxHeight: 150,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 6,
@@ -118,4 +151,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 4,
   },
+  row: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+},
+copy: {
+  fontSize: 14,
+  color: '#1565c0',
+},
+
 });
