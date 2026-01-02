@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useCall } from '../contexts/CallContext';
 import { useTheme } from '../contexts/ThemeContext';
-import Icon from '../components/Icon';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ThemeToggle from '../components/ThemeToggle';
 import { getColors, Spacing, Typography, BorderRadius } from '../constants/theme';
 
@@ -81,7 +81,7 @@ export default function IncomingCallScreen() {
         {/* Caller Info */}
         <View style={styles.callerSection}>
           <View style={[styles.iconContainer, { backgroundColor: colors.primary }]}>
-            <Icon name="Phone" size={64} color={colors.white} />
+            <FontAwesome name="phone" size={64} color={colors.white} />
           </View>
 
           <Text style={[styles.incomingText, { color: colors.textSecondary }]}>Incoming Call</Text>
@@ -96,7 +96,7 @@ export default function IncomingCallScreen() {
             onPress={handleAccept}
             style={[styles.actionButton, styles.acceptButton, { backgroundColor: colors.success }]}
           >
-            <Icon name="Phone" size={40} color={colors.white} />
+            <FontAwesome name="phone" size={40} color={colors.white} />
             <Text style={styles.actionButtonText}>Accept</Text>
           </TouchableOpacity>
 
@@ -105,7 +105,7 @@ export default function IncomingCallScreen() {
             onPress={handleReject}
             style={[styles.actionButton, styles.rejectButton, { backgroundColor: colors.danger }]}
           >
-            <Icon name="PhoneOff" size={40} color={colors.white} />
+            <FontAwesome name="phone-slash" size={40} color={colors.white} />
             <Text style={styles.actionButtonText}>Reject</Text>
           </TouchableOpacity>
         </View>

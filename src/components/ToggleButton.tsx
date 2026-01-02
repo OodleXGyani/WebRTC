@@ -6,7 +6,7 @@ import {
   View,
   Platform,
 } from 'react-native';
-import Icon from './Icon';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Colors, Spacing, BorderRadius, Typography } from '../constants/theme';
 
 interface ToggleButtonProps {
@@ -40,7 +40,7 @@ export default function ToggleButton({
       activeOpacity={0.7}
     >
       <View style={styles.content}>
-        <Icon
+        <FontAwesome
           name={currentIcon}
           size={32}
           color={iconColor}

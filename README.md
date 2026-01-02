@@ -1,97 +1,263 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# WebRTC Calling App
 
-# Getting Started
+A full-featured **React Native** mobile application for peer-to-peer video and audio calling using WebRTC. This app enables direct video/audio communication between users without intermediaries after the initial connection setup.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 📱 Features
 
-## Step 1: Start Metro
+- **Peer-to-Peer Video/Audio Calls** - Direct connection between users using WebRTC
+- **User ID-based Calling** - Simple ID-based system to call other users
+- **Manual Mode (Developer)** - Debug mode for manual SDP offer/answer exchange
+- **Incoming Call Handling** - Accept or reject incoming calls with a beautiful UI
+- **Call Controls** - Toggle microphone and camera on/off during calls
+- **Dark/Light Theme** - Beautiful theming with dark and light mode support
+- **Connection Status** - Real-time signaling server connection status
+- **Clipboard Support** - Copy user IDs and SDP data with one tap
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## 🚀 How to Use
 
-```sh
-# Using npm
+### Prerequisites
+
+- **Node.js** >= 20
+- **React Native** development environment set up
+- **Android Studio** (for Android) or **Xcode** (for iOS)
+- Physical device (camera/microphone not available on emulator)
+
+### Installation
+
+1. **Clone and install dependencies:**
+
+```bash
+cd WebRTC
+npm install
+```
+
+2. **Start Metro:**
+
+```bash
 npm start
-
-# OR using Yarn
-yarn start
+# OR
+npx react-native start
 ```
 
-## Step 2: Build and run your app
+3. **Run on Android:**
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
+```bash
 npm run android
-
-# OR using Yarn
-yarn android
+# OR
+npx react-native run-android
 ```
 
-### iOS
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+### Quick Start Guide
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+#### Mode 1: Automatic User ID Calling (Recommended)
 
-```sh
-bundle install
+1. **User A** opens the app
+   - Waits for connection status to show "Connected"
+   - Copies their User ID
+
+2. **User A shares ID** with User B (via chat, email, etc.)
+
+3. **User B** opens the app
+   - Pastes User A's ID in "User ID to call"
+   - Taps "Start Call"
+
+4. **User A** sees incoming call screen
+   - Taps "Accept" to start the call
+
+5. **Both users** can now video chat!
+   - Toggle microphone/camera using the control buttons
+   - End call anytime with the red "End" button
+
+#### Mode 2: Manual SDP Exchange (Developer Mode)
+
+For testing without a signaling server or debugging:
+
+**Caller (Create Offer):**
+1. Navigate to "Manual Mode" → "Create Call (Manual)"
+2. Tap "Generate Offer"
+3. Copy the generated SDP offer
+4. Share it with the callee (via text, email, etc.)
+5. Wait for answer, then paste and apply
+
+**Callee (Join Call):**
+1. Navigate to "Manual Mode" → "Join Call (Manual)"
+2. Paste the offer from caller
+3. Tap "Create Answer"
+4. Copy the answer and share with caller
+5. ICE candidates will be exchanged automatically
+
+
+
+------------------------------ For Developers Only -----------------------------
+
+
+## 🏗️ Project Architecture
+
+```
+WebRTC Calling App
+├── App.tsx                    # Main app entry point with providers
+├── src/
+│   ├── components/            # Reusable UI components
+│   │   ├── Button.tsx         # Custom button component
+│   │   ├── Card.tsx           # Card container component
+│   │   ├── Icon.tsx           # Icon component
+│   │   ├── InputField.tsx     # Text input with label
+│   │   ├── Section.tsx        # Section container with title
+│   │   ├── ThemeToggle.tsx    # Dark/light mode toggle
+│   │   └── ToggleButton.tsx   # On/off toggle button
+│   ├── contexts/              # React Context providers
+│   │   ├── CallContext.tsx    # Central call state management
+│   │   └── ThemeContext.tsx   # Theme state management
+│   ├── navigation/            # Navigation setup
+│   │   └── AppNavigator.tsx   # Stack navigator with screens
+│   ├── screens/               # App screens
+│   │   ├── HomeScreen.tsx     # Main screen with user ID & call UI
+│   │   ├── CreateOfferScreen.tsx  # Manual mode: create offer
+│   │   ├── JoinCallScreen.tsx     # Manual mode: join call
+│   │   └── IncomingCallScreen.tsx # Incoming call UI
+│   ├── signaling/             # WebSocket signaling layer
+│   │   ├── socket.ts          # WebSocket transport
+│   │   ├── types.ts           # Message type definitions
+│   │   └── useSignaling.ts    # Signaling hook
+│   ├── webrtc/                # WebRTC layer
+│   │   ├── media.ts           # Media stream utilities
+│   │   ├── useWebRTC.ts       # WebRTC hook
+│   │   └── useCallIntegration.ts  # Call orchestration
+│   ├── constants/             # Configuration & constants
+│   │   ├── config.ts          # App configuration
+│   │   ├── ice.ts             # ICE server configuration
+│   │   └── theme.ts           # Theme colors & styles
+│   └── utils/                 # Utility functions
+│       ├── clipboard.ts       # Clipboard utilities
+│       ├── permissions.ts     # Permission helpers
+│       └── userId.ts          # User ID generation
+├── android/                   # Android native code
+├── ios/                       # iOS native code
+└── package.json               # Dependencies
 ```
 
-Then, and every time you update your native dependencies, run:
+## 🔄 Project Flow
 
-```sh
-bundle exec pod install
+### 1. **Initialization Flow**
+
+```
+App.tsx
+    ↓
+CallProvider (CallContext.tsx)
+    ├── useCallIntegration.ts
+    │   ├── useSignaling() → Connects to signaling server
+    │   └── useWebRTC() → Initializes WebRTC peer connection
+    └── useCall() hook provides state to all screens
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+### 2. **Call Flow (User ID Mode)**
 
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+```
+┌──────────────┐                           ┌─────────────────┐
+│   User A     │                           │   Signaling     │
+│  (Caller)    │                           │    Server       │
+└──────┬───────┘                           └────────┬────────┘
+       │                                          │
+       │  1. Connect & Register                   │
+       │ ────────────────────────────────────────>
+       │                                          │
+       │  2. Get User ID (e.g., "user-abc123")   │
+       │ <───────────────────────────────────────
+       │                                          │
+       │  3. Share ID with User B                 │
+       │     (outside app)                        │
+       │                                          │
+       │  4. Enter User B's ID & tap "Start Call" │
+       │ ────────────────────────────────────────>
+       │         (type: "call", to: "user-xyz")
+       │                                          │
+       │                                          │  5. Notify User B
+       │                                          <───────────────
+       │                                          │
+       │                                          │  6. User B accepts
+       │                                          <───────────────
+       │  7. WebRTC ICE negotiation              ───────────────>
+       │     (offer/answer/ice candidates)       (via signaling)
+       │  8. Direct P2P Connection Established   <───────────────
+       │                                          │
+       │  9. Video/Audio Streams Flow Directly   <───────────────
+       │     (No server involvement)             
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### 3. **Manual Mode Flow (SDP Exchange)**
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+For testing/debugging without automatic signaling:
 
-## Step 3: Modify your app
+```
+┌──────────────┐                    ┌──────────────┐
+│   Caller     │                    │   Callee     │
+└──────┬───────┘                    └──────┬───────┘
+       │                                  │
+       │  1. Generate Offer (SDP)         │
+       │ <────────────────────────────────
+       │                                  │
+       │  2. Copy & Share Offer (manual)  │
+       │ ────────────────────────────────>
+       │                                  │
+       │                                  │  3. Paste Offer
+       │                                  │  4. Generate Answer
+       │ <────────────────────────────────
+       │                                  │
+       │  5. Copy & Share Answer          │
+       │ ────────────────────────────────>
+       │                                  │
+       │  6. Paste Answer                 │
+       │  7. ICE Candidates Exchange      │
+       │ <────────────────────────────────
+       │                                  │
+       │  8. P2P Connection Established   │
+```
 
-Now that you have successfully run the app, let's make changes!
+### 4. **Component Data Flow**
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    CallContext (State)                      │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │ Signaling State:                                    │   │
+│  │ • userId, isSignalingConnected                      │   │
+│  │ • incomingCallFrom, activeCallWith                  │   │
+│  └─────────────────────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │ WebRTC State:                                       │   │
+│  │ • localStream, remoteStream, iceCandidates          │   │
+│  │ • isMicOn, isCamOn, initError                      │   │
+│  └─────────────────────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │ Actions:                                            │   │
+│  │ • callUser, acceptCall, rejectCall, endCall         │   │
+│  │ • createOffer, createAnswer, applyAnswer            │   │
+│  │ • toggleMic, toggleCamera                           │   │
+│  └─────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+                           │
+                           │ useCall() hook
+                           ▼
+┌────────────┐  ┌──────────────┐  ┌──────────────────┐
+│HomeScreen  │  │CreateOffer   │  │IncomingCallScreen│
+│(Main UI)   │  │(Manual Mode) │  │(Call Handling)   │
+└────────────┘  └──────────────┘  └──────────────────┘
+```
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+### 5. **Signaling Message Types**
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+```
+Register → User registers with server
+   │
+   ├── Call → Initiate call to user
+   │     │
+   │     ├── Offer → SDP offer from caller
+   │     │     │
+   │     │     └── Answer → SDP answer from callee
+   │     │
+   │     └── Ice → ICE candidate exchange
+   │
+   └── End → Call termination
+```
