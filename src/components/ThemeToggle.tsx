@@ -1,8 +1,8 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useTheme } from '../contexts/ThemeContext';
 import { getColors, Spacing, BorderRadius } from '../constants/theme';
-import Icon from './Icon';
 
 export default function ThemeToggle() {
   const { isDarkMode, toggleTheme } = useTheme();
@@ -15,8 +15,8 @@ export default function ThemeToggle() {
       accessibilityLabel="Toggle dark mode"
       accessibilityRole="button"
     >
-      <Icon
-        name={isDarkMode ? 'Sun' : 'Moon'}
+      <FontAwesome
+        name={isDarkMode ? 'sun-o' : 'moon-o'}
         size={20}
         color={colors.primary}
       />

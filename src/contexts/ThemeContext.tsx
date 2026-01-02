@@ -46,10 +46,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  if (isLoading) {
-    return <>{children}</>;
-  }
-
   return (
     <ThemeContext.Provider
       value={{

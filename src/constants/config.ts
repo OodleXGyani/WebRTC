@@ -9,6 +9,7 @@ export const SIGNALING_SERVER_URL = 'ws://192.168.18.186:8080';
 /**
  * App name and version
  */
+
 export const APP_NAME = 'WebRTC Calling';
 export const APP_VERSION = '1.0.0';
 
