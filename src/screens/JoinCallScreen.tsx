@@ -17,7 +17,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import Section from '../components/Section';
-import Icon from '../components/Icon';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ToggleButton from '../components/ToggleButton';
 import ThemeToggle from '../components/ThemeToggle';
 import { getColors, Colors, Spacing, BorderRadius, Typography } from '../constants/theme';
@@ -128,8 +128,8 @@ export default function JoinCallScreen() {
             <ToggleButton
               active={isMicOn}
               onPress={toggleMic}
-              activeIcon="Microphone"
-              inactiveIcon="MicrophoneOff"
+              activeIcon="microphone"
+              inactiveIcon="microphone-slash"
               activeLabel="Mic On"
               inactiveLabel="Mic Off"
             />
@@ -137,8 +137,8 @@ export default function JoinCallScreen() {
             <ToggleButton
               active={isCamOn}
               onPress={toggleCamera}
-              activeIcon="Video"
-              inactiveIcon="VideoOff"
+              activeIcon="video-camera"
+              inactiveIcon="video-slash"
               activeLabel="Cam On"
               inactiveLabel="Cam Off"
             />
@@ -147,8 +147,8 @@ export default function JoinCallScreen() {
               onPress={endCall}
               style={[styles.controlBtn, styles.controlBtnDanger, { backgroundColor: colors.danger }]}
             >
-              <Icon
-                name="PhoneOff"
+              <FontAwesome
+                name="phone-slash"
                 size={32}
                 color={colors.white}
               />
@@ -175,7 +175,7 @@ export default function JoinCallScreen() {
               title="Create Answer"
               onPress={handleCreateAnswer}
               fullWidth
-              icon="Link"
+              icon="link"
               disabled={!offerInput}
             />
           </Card>
@@ -193,8 +193,8 @@ export default function JoinCallScreen() {
                   onPress={() => copyToClipboard(answer, 'Answer')}
                   style={styles.copyButtonContainer}
                 >
-                  <Icon
-                    name="Copy"
+                  <FontAwesome
+                    name="copy"
                     size={16}
                     color={colors.primary}
                   />
@@ -226,8 +226,8 @@ export default function JoinCallScreen() {
                     }
                     style={styles.copyButtonContainer}
                   >
-                    <Icon
-                      name="Copy"
+                    <FontAwesome
+                      name="copy"
                       size={16}
                       color={colors.primary}
                     />

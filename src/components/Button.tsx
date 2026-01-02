@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   View,
 } from 'react-native';
-import Icon from './Icon';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Colors, Spacing, BorderRadius, Typography } from '../constants/theme';
 
 interface ButtonProps {
@@ -75,7 +75,7 @@ export default function Button({
       ) : (
         <View style={styles.content}>
           {icon && (
-            <Icon
+            <FontAwesome
               name={icon}
               size={getIconSize()}
               color={getIconColor()}
