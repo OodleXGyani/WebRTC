@@ -16,7 +16,7 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import Section from '../components/Section';
 import InputField from '../components/InputField';
-import Icon from '../components/Icon';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ThemeToggle from '../components/ThemeToggle';
 import { getColors, Colors, Spacing, Typography, BorderRadius } from '../constants/theme';
 
@@ -150,7 +150,7 @@ export default function HomeScreen() {
                     }}
                     style={styles.copyButton}
                   >
-                    <Icon name="Copy" size={18} color={colors.primary} />
+                    <FontAwesome name="copy" size={18} color={colors.primary} />
                   </TouchableOpacity>
                 </View>
                 <Text style={styles.userIdNote}>
@@ -191,7 +191,7 @@ export default function HomeScreen() {
             <Button
               title="Start Call"
               onPress={handleCall}
-              icon="Phone"
+              icon="phone"
               size="lg"
               fullWidth
               disabled={!isSignalingConnected || !userId || !targetUserId.trim()}
@@ -209,25 +209,25 @@ export default function HomeScreen() {
         <Section title="How It Works">
           <View style={styles.featuresList}>
             <FeatureItem
-              icon="Zap"
+              icon="bolt"
               title="Direct Connection"
               description="Peer-to-peer video calling without intermediaries"
               colors={colors}
             />
             <FeatureItem
-              icon="Users"
+              icon="users"
               title="Share Your ID"
               description="Give your unique ID to others so they can call you"
               colors={colors}
             />
             <FeatureItem
-              icon="Video"
+              icon="video-camera"
               title="Video & Audio"
               description="Crystal clear video and audio communication"
               colors={colors}
             />
             <FeatureItem
-              icon="Lock"
+              icon="lock"
               title="Secure"
               description="End-to-end encrypted peer-to-peer calls"
               colors={colors}
@@ -245,7 +245,7 @@ export default function HomeScreen() {
               <Button
                 title="Create Call (Manual)"
                 onPress={() => navigation.navigate('Create')}
-                icon="PlusCircle"
+                icon="plus-circle"
                 size="sm"
                 variant="secondary"
                 fullWidth
@@ -253,7 +253,7 @@ export default function HomeScreen() {
               <Button
                 title="Join Call (Manual)"
                 onPress={() => navigation.navigate('Join')}
-                icon="Link"
+                icon="link"
                 size="sm"
                 variant="secondary"
                 fullWidth
@@ -283,7 +283,7 @@ function FeatureItem({
   return (
     <Card>
       <View style={styles.featureContent}>
-        <Icon name={icon} size={32} color={colors.primary} />
+        <FontAwesome name={icon} size={32} color={colors.primary} />
         <View style={styles.featureText}>
           <Text style={[styles.featureTitle, { color: colors.text }]}>{title}</Text>
           <Text style={[styles.featureDescription, { color: colors.textSecondary }]}>

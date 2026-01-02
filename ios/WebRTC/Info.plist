@@ -54,5 +54,9 @@
 	<string>Camera access is required to share your video during WebRTC calls</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Microphone access is required to share your audio during WebRTC calls</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>FontAwesome.ttf</string>
+	</array>
 </dict>
 </plist>
